@@ -15,7 +15,7 @@ namespace ProEventos.API.Models
 
         public String Tema { get; set; }
  
-        public int QunatidadePessoas { get; set; }  
+        public int QuantidadePessoas { get; set; }  
 
         public String Lote { get; set; }
 
