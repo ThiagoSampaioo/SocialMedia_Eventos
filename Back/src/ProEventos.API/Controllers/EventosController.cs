@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ProEventos.API.Models;
-using ProEventos.API.Data;
-
+using ProEventos.Domain;
+using ProEventos.Application.Contratos;
 
 namespace ProEventos.API.Controllers;
 
@@ -11,38 +10,116 @@ namespace ProEventos.API.Controllers;
 
 public class EventosController : ControllerBase
 {
-    
-        private readonly DataContext _context;
 
-    public EventosController(DataContext context)
+    private readonly IEventoService _eventoService;
+
+    public EventosController(IEventoService eventoService)
     {
-            this._context = context;
+        _eventoService = eventoService;
+
 
     }
 
     [HttpGet]
-    public IEnumerable<Evento> Get()
+    public async Task<IActionResult> Get()
     {
-        return _context.Eventos;
+        try
+        {
+            var eventos = await _eventoService.GetAllEventosAsync(true);
+            if (eventos == null) return NotFound("Nenhum evento encontrado");
+
+            return Ok(eventos);
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro: {error.Message}");
+        }
     }
+
     [HttpGet("{id}")]
-    public Evento GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        return _context.Eventos.FirstOrDefault(evento => evento.EventoId == id);
+        try
+        {
+            var evento = await _eventoService.GetEventosByIdAsync(id, true);
+            if (evento == null) return NotFound("Nenhum evento encontrado");
+
+            return Ok(evento);
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar buscar eventos. Erro: {error.Message}");
+        }
+    }
+    [HttpGet("{tema}/tema")]
+    public async Task<IActionResult> GetByTema(string tema)
+    {
+        try
+        {
+            var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, true);
+            if (eventos == null) return NotFound("Nenhum evento encontrado");
+
+            return Ok(eventos);
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar buscar eventos. Erro: {error.Message}");
+        }
     }
     [HttpPost]
-    public String Post()
+    public async Task<IActionResult> Post(Evento model)
     {
-        return "Deu certo";
+        try
+        {
+            var eventos = await _eventoService.AddEventos(model);
+            if (eventos == null) return BadRequest("Erro ao tentar adicionar eventos.");
+
+            return Ok(eventos);
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar postar eventos. Erro: {error.Message}");
+        }
     }
     [HttpPut("{id}")]
-    public String Put(int id)
+    public async Task<IActionResult> Put(int id, Evento model)
     {
-        return $"value by id: {id}";
+        try
+        {
+            var eventos = await _eventoService.UpdateEventos(id, model);
+            if (eventos == null) return BadRequest("Nenhum evento encontrado");
+
+            return Ok(eventos);
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar editar eventos. Erro: {error.Message}");
+        }
     }
     [HttpDelete("{id}")]
-    public String Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        return $"Delete by id: {id}";
+        try
+        {
+
+            return await _eventoService.DeleteEventos(id) ? Ok("Deletado") : BadRequest("Erro ao deletar");
+
+
+        }
+        catch (Exception error)
+        {
+
+            return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar deletar eventos. Erro: {error.Message}");
+        }
     }
 }
