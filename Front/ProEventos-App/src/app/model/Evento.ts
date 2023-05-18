@@ -7,11 +7,11 @@ export interface Evento {
   local: string  ;
   dataEvento?: Date ;
   tema: string  ;
-  quantidadePessoa: number ;
+  quantidadePessoas: number ;
   imagemUrl: string  ;
   telefone: string ;
   email: string  ;
-  lote: Lote[];
+  lotes: Lote[];
   redesSociais: RedeSocial[];
   palestrantesEventos: Palestrante[];
 }

@@ -8,7 +8,7 @@ import { PalestrantesComponent } from './components/palestrantes/palestrantes.co
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { NavComponent } from './shared/nav/nav.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventoService } from './services/evento.service';
 import { DataTimeFormatPipe } from './helpers/DataTimeFormat.pipe';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -18,8 +18,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { PerfilComponent } from './components/perfil/perfil.component';
+import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
+import { EventoDetalheComponent } from './components/eventos/evento-detalhe/evento-detalhe.component';
+import { EventoListComponent } from './components/eventos/evento-list/evento-list.component';
+import { UserComponent } from './components/user/user.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { RegistrationComponent } from './components/user/registration/registration.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,10 +32,15 @@ import { TituloComponent } from './shared/titulo/titulo.component';
     PalestrantesComponent,
     ContatosComponent,
     DashboardComponent,
+    NavComponent,
+    DataTimeFormatPipe,
+    TituloComponent,
+    EventoDetalheComponent,
+    EventoListComponent,
+    UserComponent,
     PerfilComponent,
-      NavComponent,
-      DataTimeFormatPipe,
-      TituloComponent
+    LoginComponent,
+    RegistrationComponent
     ],
     imports: [
       BrowserModule,
@@ -38,6 +48,7 @@ import { TituloComponent } from './shared/titulo/titulo.component';
       HttpClientModule,
       BrowserAnimationsModule,
       FormsModule,
+      ReactiveFormsModule,
       CollapseModule.forRoot(),
       TooltipModule.forRoot(),
       BsDropdownModule.forRoot(),

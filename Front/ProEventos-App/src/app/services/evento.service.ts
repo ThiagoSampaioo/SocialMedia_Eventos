@@ -6,7 +6,7 @@ import { Evento } from '../model/Evento';
 
 @Injectable()
 export class EventoService {
-  baseURL = '//https://localhost:7236/api/eventos';
+  baseURL = 'https://localhost:7236/api/eventos';
 
   constructor(private http: HttpClient) { }
   public getEventos(): Observable<Evento[]>{
